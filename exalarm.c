@@ -62,7 +62,7 @@ inline int set_alarm (int timeout)
 	sa.sa_flags = SA_SIGINFO;
 
 	sigset_t oset;
-	sigprocmask (SIG_BLOCK, NULL, &oset);
+	sigprocmask (0, NULL, &oset);
 	sa.sa_mask = oset;
 
 	int ret = sigaction (SIGALRM, &sa, &old_sa);
