@@ -9,9 +9,9 @@ static struct sigaction sa;
 static struct sigaction old_sa;
 static int ex_initialized = 0;
 
-static void ex_sig_handle (int signum);
+static void ex_sig_handler (int signum);
 
-static void ex_sig_handle (int signum)
+static void ex_sig_handler (int signum)
 {
 	if ( ex_initialized == 0 ) { return; }
         switch (signum) {
@@ -45,7 +45,7 @@ inline int set_alarm (int timeout)
 	assert (ex_initialized == 1);
 		
         memset (&sa, 0, sizeof (sa));
-        sa.sa_handler = &ex_sig_handle;
+        sa.sa_handler = &ex_sig_handler;
 
 	sigset_t oset;
 	sigprocmask (SIG_BLOCK, NULL, &oset);
