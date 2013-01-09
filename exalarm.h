@@ -7,9 +7,14 @@ typedef enum exceptions {
 	timeout_ex = 2,
 } exceptions_t;
 
+#ifndef __GNUC__
+#  define  __attribute__(x)  /*NOTHING*/
+#endif
+
+
 inline int set_alarm (int timeout);
 inline void disable_alarm (void);
-void init_exception (int const* type_test);
+void init_exception (int const* type_test) __attribute__((__nonnull__(1)));
 inline void raise_ex (exceptions_t exnum);
 
 sigjmp_buf ex_buf;
