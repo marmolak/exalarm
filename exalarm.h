@@ -3,13 +3,13 @@
 
 #include <setjmp.h>
 
-typedef enum exceptions {
-	timeout_ex = 2,
-} exceptions_t;
-
 #ifndef __GNUC__
 #  define  __attribute__(x)  /*NOTHING*/
 #endif
+
+typedef enum exceptions {
+	timeout_ex = 2,
+} exceptions_t;
 
 
 inline int set_alarm (int timeout);
