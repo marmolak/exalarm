@@ -26,16 +26,16 @@ static void ex_sig_handler (int signum, siginfo_t *siginfo, void *blank)
 	if (siginfo->si_pid != 0) { return; }
 #endif
 
-        switch (signum) {
+	switch (signum) {
                 // timeout exception
-                case SIGALRM:
-                        raise_ex (timeout_ex);
-                        return;
-                        break;
+		case SIGALRM:
+			raise_ex (timeout_ex);
+			return;
+			break;
 
-                default:
-                        return;
-                        break;
+		default:
+			return;
+			break;
         }
 }
 
@@ -57,18 +57,16 @@ inline int set_alarm (int timeout)
 
 	assert (ex_initialized == 1);
 		
-        memset (&sa, 0, sizeof (sa));
-        sa.sa_sigaction = &ex_sig_handler;
+	memset (&sa, 0, sizeof (sa));
+	sa.sa_sigaction = &ex_sig_handler;
 	sa.sa_flags = SA_SIGINFO;
 
 	sigset_t oset;
 	sigprocmask (SIG_BLOCK, NULL, &oset);
 	sa.sa_mask = oset;
 
-        int ret = sigaction (SIGALRM, &sa, &old_sa);
-	if ( ret == -1 ) {
-		return ret;
-	}
+	int ret = sigaction (SIGALRM, &sa, &old_sa);
+	if ( ret == -1 ) { return ret; }
 
 	alarm (timeout);
 	return ret;
@@ -76,23 +74,21 @@ inline int set_alarm (int timeout)
 
 inline void disable_alarm (void)
 {
-	if ( ex_initialized == 0 ) {
-		return;
-	}
+	if ( ex_initialized == 0 ) { return; }
 
 	ex_initialized = 0;
-        alarm (0);
-        sigaction (SIGALRM, &old_sa, NULL);
+	alarm (0);
+	sigaction (SIGALRM, &old_sa, NULL);
 }
 
 inline void raise_ex (exceptions_t exnum)
 {
 	assert (ex_initialized == 1);
 
-        alarm (0);
+	alarm (0);
 	ex_initialized = 0;
 
-        sigaction (SIGALRM, &old_sa, NULL);
+	sigaction (SIGALRM, &old_sa, NULL);
 
 	siglongjmp (ex_buf, exnum);
 }
