@@ -19,7 +19,7 @@ int main (int argc, char **argv)
 	do_exception (&exc);
 	if ( ! exc ) {
 
-		set_alarm (1);
+		set_alarm (9);
 		/* failed (); */
 		sleep (10);
 		disable_alarm ();

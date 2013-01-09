@@ -1,3 +1,4 @@
+#include <sys/types.h>
 #include <unistd.h>
 #include <signal.h>
 #include <string.h>
@@ -9,11 +10,18 @@ static struct sigaction sa;
 static struct sigaction old_sa;
 static int ex_initialized = 0;
 
-static void ex_sig_handler (int signum);
+static void ex_sig_handler (int signum, siginfo_t *siginfo, void *blank);
 
-static void ex_sig_handler (int signum)
+static void ex_sig_handler (int signum, siginfo_t *siginfo, void *blank)
 {
+	(void) blank;
+	
+	/* checks */
 	if ( ex_initialized == 0 ) { return; }
+
+	/* don't raise exception if we receive signal from outer world. */
+	if (siginfo->si_pid != 0) { return; }
+
         switch (signum) {
                 // timeout exception
                 case SIGALRM:
@@ -31,6 +39,7 @@ static void ex_sig_handler (int signum)
 void init_exception (int const* type_test)
 {
 	(void) type_test; /* only for strict type check */
+
 	assert (ex_initialized == 0);
 	ex_initialized = 1;
 }
@@ -45,7 +54,8 @@ inline int set_alarm (int timeout)
 	assert (ex_initialized == 1);
 		
         memset (&sa, 0, sizeof (sa));
-        sa.sa_handler = &ex_sig_handler;
+        sa.sa_sigaction = &ex_sig_handler;
+	sa.sa_flags = SA_SIGINFO;
 
 	sigset_t oset;
 	sigprocmask (SIG_BLOCK, NULL, &oset);
