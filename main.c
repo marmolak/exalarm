@@ -6,6 +6,11 @@
 #include <stdlib.h>
 #include "exalarm.h"
 
+void failed (void)
+{
+	raise_ex (666);
+}
+
 int main (int argc, char **argv)
 {
 	(void) argc; (void) argv;
@@ -15,6 +20,7 @@ int main (int argc, char **argv)
 	if ( ! exc ) {
 
 		set_alarm (1);
+		/* failed (); */
 		sleep (10);
 		disable_alarm ();
 	} else {
