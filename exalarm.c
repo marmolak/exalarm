@@ -13,6 +13,7 @@ static void ex_sig_handle (int signum);
 
 static void ex_sig_handle (int signum)
 {
+	if ( ex_initialized == 0 ) { return; }
         switch (signum) {
                 // timeout exception
                 case SIGALRM:
