@@ -20,7 +20,11 @@ static void ex_sig_handler (int signum, siginfo_t *siginfo, void *blank)
 	if ( ex_initialized == 0 ) { return; }
 
 	/* don't raise exception if we receive signal from outer world. */
+#ifdef DEBUG
+	(void) siginfo;
+#else
 	if (siginfo->si_pid != 0) { return; }
+#endif
 
         switch (signum) {
                 // timeout exception
