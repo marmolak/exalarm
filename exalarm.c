@@ -88,5 +88,11 @@ inline void disable_alarm (void)
 inline void raise_ex (exceptions_t exnum)
 {
 	assert (ex_initialized == 1);
+
+        alarm (0);
+	ex_initialized = 0;
+
+        sigaction (SIGALRM, &old_sa, NULL);
+
 	siglongjmp (ex_buf, exnum);
 }

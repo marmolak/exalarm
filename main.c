@@ -18,13 +18,10 @@ int main (int argc, char **argv)
 	int exc = 0;
 	do_exception (&exc);
 	if ( ! exc ) {
-
-		set_alarm (9);
-		/* failed (); */
+		set_alarm (1);
+		//failed ();
 		sleep (10);
-		disable_alarm ();
 	} else {
-		disable_alarm ();
 		if ( exc == timeout_ex ) {
 			printf ("timeout!\n");
 		} else if ( exc ) {
