@@ -28,7 +28,7 @@ static void ex_sig_handle (int signum)
 }
 
 /* check exalarm.h for do_exception macro */
-void init_exception (int *type_test) {
+void init_exception (int const* type_test) {
 	(void) type_test; /* only for strict type check */
 	assert (ex_initialized == 0);
 	ex_initialized = 1;

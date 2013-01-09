@@ -9,7 +9,7 @@ typedef enum exceptions {
 
 inline int set_alarm (int timeout);
 inline void disable_alarm (void);
-void init_exception (int *type_test);
+void init_exception (int const* type_test);
 inline void raise_ex (exceptions_t exnum);
 
 sigjmp_buf ex_buf;
