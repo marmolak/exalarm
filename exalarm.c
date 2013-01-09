@@ -17,7 +17,7 @@ static void ex_sig_handle (int signum)
         switch (signum) {
                 // timeout exception
                 case SIGALRM:
-                        raise_ex (ex_buf, timeout_ex);
+                        raise_ex (timeout_ex);
                         return;
                         break;
 
