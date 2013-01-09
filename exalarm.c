@@ -16,7 +16,7 @@ static void ex_sig_handle (int signum)
         switch (signum) {
                 // timeout exception
                 case SIGALRM:
-                        siglongjmp (ex_buf, timeout_ex);
+                        raise_ex (ex_buf, timeout_ex);
                         return;
                         break;
 
@@ -67,4 +67,10 @@ inline void disable_alarm (void)
 	ex_initialized = 0;
         alarm (0);
         sigaction (SIGALRM, &old_sa, NULL);
+}
+
+inline void raise_ex (exceptions_t exnum)
+{
+	assert (ex_initialized == 1);
+	siglongjmp (ex_buf, exnum);
 }

@@ -3,13 +3,14 @@
 
 #include <setjmp.h>
 
-enum exceptions {
+typedef enum exceptions {
 	timeout_ex = 2,
 } exceptions_t;
 
 inline int set_alarm (int timeout);
 inline void disable_alarm (void);
 void init_exception (int *type_test);
+inline void raise_ex (exceptions_t exnum);
 
 sigjmp_buf ex_buf;
 
